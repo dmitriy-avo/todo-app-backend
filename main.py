@@ -3,6 +3,25 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from uuid import uuid4
 
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, DeclarativeBase, Mapped, mapped_column
+
+from config import settings
+
+DATABASE_URL = settings.database_url
+engine = create_engine(DATABASE_URL)
+SessionLocal = sessionmaker(bind=engine)
+
+class Base(DeclarativeBase):
+    id: Mapped[str] = mapped_column(primary_key=True, default=lambda: str(uuid4()))
+
+class TaskORM(Base):
+    __tablename__ = "tasks"
+
+    title: Mapped[str]
+    completed: Mapped[bool] = mapped_column(default=False)
+
+
 app = FastAPI()
 app.add_middleware(CORSMiddleware,
                    allow_origins=["http://localhost:3000"],
