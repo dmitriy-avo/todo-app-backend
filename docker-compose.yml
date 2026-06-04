@@ -20,7 +20,7 @@ services:
       DATABASE_URL: postgresql+psycopg://postgres:postgres@db:5432/postgres
     volumes:
       - .:/app             # монтируем весь бэкенд-код, чтобы изменения были видны сразу
-    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload  # --reload смотрит за изменениями файлов
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload  # --reload смотрит за изменениями файлов
     depends_on:
       - db                 # сначала запустится db, потом backend
 
